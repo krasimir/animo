@@ -10,7 +10,7 @@ The package delivers a single utility `TweenManager` that accepts a function. Th
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:tween_manager/manager.dart';
+import 'package:tween_manager/tween_manager.dart';
 
 class TestWidget extends StatelessWidget {
   Widget build(context) {
