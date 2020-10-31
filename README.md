@@ -1,2 +1,5 @@
 # tween_manager
-Dart/Flutter package for animation
+
+Dart/Flutter utility package for performing staggered animation.
+
+
