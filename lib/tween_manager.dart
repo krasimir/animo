@@ -2,72 +2,69 @@ import 'package:flutter/material.dart';
 
 const DEFAULT_DURATION = Duration(seconds: 1);
 
-class TweenW extends StatefulWidget {
-  Widget Function(
-      Function(
-          {@required double begin,
-          @required double end,
-          @required Interval interval}),
-      AnimationController) callback;
-  Duration duration;
+class TweenManager extends StatefulWidget {
+  void Function(Function) animationFactory;
 
-  TweenW(this.callback, this.duration);
+  TweenManager(Function Function(Function) animations) {
+    animationFactory = animations;
+  }
 
   @override
   createState() {
-    return _TweenW(callback, duration);
+    return _TW(animationFactory);
   }
 }
 
-class _TweenW extends State<TweenW> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Widget Function(
-      Function(
-          {@required double begin,
-          @required double end,
-          @required Interval interval}),
-      AnimationController) callback;
-  Duration duration;
+class _TW extends State<TweenManager> with SingleTickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
 
-  _TweenW(this.callback, this.duration);
+  Function Function(Function) animationFactory;
+  Widget Function() childFactory;
+
+  _TW(this.animationFactory);
 
   @override
   initState() {
     super.initState();
-    controller = AnimationController(duration: duration, vsync: this);
+    childFactory = animationFactory(defineController);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controllers.forEach((c) {
+      c.dispose();
+    });
     super.dispose();
   }
 
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: controller,
-        builder: (context, child) {
-          Animation defineTween(
-              {@required double begin,
-              @required double end,
-              @required Interval interval}) {
-            return Tween<double>(begin: begin, end: end)
-                .animate(CurvedAnimation(parent: controller, curve: interval));
-          }
+  TMAnimation defineController(
+      {Duration duration = DEFAULT_DURATION, Duration reverseDuration}) {
+    AnimationController c = AnimationController(
+        duration: duration,
+        vsync: this,
+        reverseDuration: reverseDuration != null ? reverseDuration : duration);
+    c.addListener(() {
+      setState(() {});
+    });
+    return TMAnimation(c);
+  }
 
-          return callback(defineTween, controller);
-        });
+  Widget build(BuildContext context) {
+    return childFactory();
   }
 }
 
-Widget TweenManager(
-    {Widget Function(
-            Function(
-                {@required double begin,
-                @required double end,
-                @required Interval interval}),
-            AnimationController)
-        callback,
-    duration = DEFAULT_DURATION}) {
-  return TweenW(callback, duration);
+class TMAnimation {
+  AnimationController controller;
+  TMAnimation(this.controller);
+  Animation defineTween(
+      {@required double begin,
+      @required double end,
+      @required Interval interval,
+      Interval reverseInterval}) {
+    return Tween<double>(begin: begin, end: end).animate(CurvedAnimation(
+        parent: controller,
+        curve: interval,
+        reverseCurve: reverseInterval != null ? reverseInterval : interval));
+  }
 }

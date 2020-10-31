@@ -1,6 +1,6 @@
 name: tween_manager
 description: Dart/Flutter utility package for performing staggered animation.
-version: 0.2.0
+version: 1.0.0
 homepage: https://github.com/krasimir/tween_manager
 
 environment:

@@ -1,25 +1,10 @@
 # tween_manager
 
-Dart/Flutter utility package for performing staggered animation.
+Dart/Flutter utility package for performing staggered animation. The idea is to have a simple interface that allows you to create multiple controllers and tweens attached to them.
 
 ---
 
-Under the hood creates a StatefulWidget widget, AnimationController and AnimatedBuilder. It's less than 100 loc.
-
-## API
-
-The package delivers a single function `TweenManager`. It accepts two params:
-
-* `Duration` - by default equal to `Duration(seconds: 1)`. This is the duration of the whole animation.
-* `callback` function - this function is called with `defineTween` helper and `controller` which is of type [`AnimationController`](https://api.flutter.dev/flutter/animation/AnimationController-class.html). The `callback` should return a widget.
-
-The `defineTween` helper creates an [`Animation`](https://api.flutter.dev/flutter/animation/Animation-class.html) object. It is really a shortcut to:
-
-```dart
-Tween<double>(begin: begin, end: end).animate(
-  CurvedAnimation(parent: controller, curve: interval)
-);
-```
+The package delivers a single utility `TweenManager` that accepts a function. That one gets called with a factory function that you can use to create simple objects of type `TMAnimation`. Those objects have `defineTween` (returns `Animation`) and `controller` which is an instance of `AnimationController`. Checkout the example below to get a better idea.
 
 ## Example
 
@@ -27,28 +12,30 @@ Tween<double>(begin: begin, end: end).animate(
 import 'package:flutter/material.dart';
 import 'package:tween_manager/manager.dart';
 
-class Home extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return TweenManager(
-      duration: Duration(seconds: 3),
-      callback: (defineTween, controller) {
-        Animation opacity = defineTween(
-            begin: 0,
-            end: 1,
-            interval: Interval(0, 0.6, curve: Curves.easeOut));
+class TestWidget extends StatelessWidget {
+  Widget build(context) {
+    return TweenManager((defineAnimation) {
+      // When you have complex animation sequences you'll probably need
+      // multiple controllers. `defineAnimation` spins up a new one every time
+      // when it gets called.
+      TMAnimation anim = defineAnimation(duration: Duration(seconds: 1));
+      
+      // You can create multiple animations attached to a single controller.
+      Animation a = anim.defineTween(
+          begin: 0, end: 120, interval: Interval(0, 1, curve: Curves.easeOut));
 
-        controller.forward();
+      // ... and at the end control your animation directly by calling forward, reverse, stop
+      // methods of the AnimationController instance
+      anim.controller.forward();
 
-        return Container(
-            color: Color(0xFF000000),
-            child: Opacity(
-              opacity: opacity.value,
-              child: Text('Hello world'),
-            ));
-      });
+      // It is important to return a function that returns your widgets. This function gets
+      // gets called on every tick of the animation.
+      return () {
+        return Text('value: ${a.value}');
+      };
+    });
   }
 }
-
 ```
 
 

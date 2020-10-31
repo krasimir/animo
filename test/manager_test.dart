@@ -4,16 +4,15 @@ import 'package:tween_manager/tween_manager.dart';
 
 class TestWidget extends StatelessWidget {
   Widget build(context) {
-    return TweenManager(
-        duration: Duration(seconds: 1),
-        callback: (defineTween, controller) {
-          Animation a = defineTween(
-              begin: 0,
-              end: 120,
-              interval: Interval(0, 1, curve: Curves.easeOut));
-          controller.forward();
-          return Text('value: ${a.value}');
-        });
+    return TweenManager((defineAnimation) {
+      TMAnimation anim = defineAnimation(duration: Duration(seconds: 1));
+      Animation a = anim.defineTween(
+          begin: 0, end: 120, interval: Interval(0, 1, curve: Curves.easeOut));
+      anim.controller.forward();
+      return () {
+        return Text('value: ${a.value}');
+      };
+    });
   }
 }
 
