@@ -28,7 +28,6 @@ class TestWidget extends StatelessWidget {
       // Attach multiple tweens to the created controller.
       anim.attach([myTween]);
       
-
       // ... and at the end control your animation directly by calling forward, reverse, stop
       // methods of the AnimationController instance
       anim.controller.forward();
