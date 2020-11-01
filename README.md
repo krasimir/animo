@@ -42,14 +42,14 @@ class TestWidget extends StatelessWidget {
 }
 ```
 
-Additionally the package offers three helper functions to apply scaling, translating and rotating:
+Additionally the package offers a few helper functions to apply scaling, translating and rotating:
+
+* `Widget withOpacity(Widget child, {double value = 1})`
+* `Widget withScale(Widget child, {double value = 1})`
+* `Widget withTranslate(Widget child, {double x = 0, double y = 0, double z = 0})`
+* `Widget withRotation(Widget child, {double x = 0, double y = 0, double z = 0})`
 
 ```dart
-// Widget withOpacity(Widget child, {double value = 1})
-// Widget withScale(Widget child, {double value = 1})
-// Widget withTranslate(Widget child, {double x = 0, double y = 0, double z = 0})
-// Widget withRotation(Widget child, {double x = 0, double y = 0, double z = 0})
-
 Padding(
   padding: EdgeInsets.only(bottom: 40),
   child: withTranslate(
@@ -62,6 +62,32 @@ Padding(
 );
 ```
 
+Also some common fading in and out (with possible position X and/or Y offset):
 
+```dart
+Widget Widget fadeIn(
+    child,
+    {
+      double offsetX = 0,
+      double offsetY = 0,
+      int duration = 800,
+      int delay = 0,
+      curve = Curves.easeOut
+    }
+)
+```
 
+and 
 
+```dart
+Widget Widget fadeOut(
+    child,
+    {
+      double offsetX = 0,
+      double offsetY = 0,
+      int duration = 800,
+      int delay = 0,
+      curve = Curves.easeOut
+    }
+)
+```
