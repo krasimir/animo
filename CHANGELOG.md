@@ -1,3 +1,5 @@
+## [2.0.0] - Renaming to Animo.
+
 ## [1.0.1] - Redesigning the API.
 
 ## [1.0.0] - Redesigning the API.

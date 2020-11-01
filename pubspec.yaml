@@ -1,7 +1,7 @@
-name: tween_manager
+name: animo
 description: Dart/Flutter utility package for performing staggered animation.
-version: 1.0.1
-homepage: https://github.com/krasimir/tween_manager
+version: 2.0.0
+homepage: https://github.com/krasimir/animo
 
 environment:
   sdk: ">=2.8.0 <3.0.0"

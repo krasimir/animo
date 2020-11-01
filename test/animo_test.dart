@@ -1,16 +1,18 @@
+import 'package:animo/animo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tween_manager/tween_manager.dart';
+
+ATween t =
+    ATween(begin: 0, end: 120, interval: Interval(0, 1, curve: Curves.easeOut));
 
 class TestWidget extends StatelessWidget {
   Widget build(context) {
-    return TweenManager((defineAnimation) {
-      TMAnimation anim = defineAnimation(duration: Duration(seconds: 1));
-      Animation a = anim.defineTween(
-          begin: 0, end: 120, interval: Interval(0, 1, curve: Curves.easeOut));
+    return Animo((defineAnimation) {
+      AAnimation anim = defineAnimation(duration: Duration(seconds: 1));
+      anim.attach([t]);
       anim.controller.forward();
       return () {
-        return Text('value: ${a.value}');
+        return Text('value: ${t.value}');
       };
     });
   }

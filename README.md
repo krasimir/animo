@@ -1,41 +1,65 @@
-# tween_manager
+# Animo
 
-Dart/Flutter utility package for performing staggered animation. The idea is to have a simple interface that allows you to create multiple controllers and tweens attached to them.
+> Why this package exists?
 
----
+Because I needed something simpler with greater control over my staggered animations. I needed an API to create multiple controllers in the context of a single widget. And of course the power to start/stop/reverse the animations when I want.
 
-The package delivers a single utility `TweenManager` that accepts a function. That one gets called with a factory function that you can use to create simple objects of type `TMAnimation`. Those objects have `defineTween` (returns `Animation`) and `controller` which is an instance of `AnimationController`. Checkout the example below to get a better idea.
-
-## Example
+## Usage
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:tween_manager/tween_manager.dart';
+import 'package:animo/animo.dart';
+
+// Define a tween.
+ATween myTween = ATween(
+  begin: 0,
+  end: 120,
+  interval: Interval(0, 1, curve: Curves.easeOut)
+);
 
 class TestWidget extends StatelessWidget {
   Widget build(context) {
-    return TweenManager((defineAnimation) {
+    return Animo((defineAnimation) {
       // When you have complex animation sequences you'll probably need
       // multiple controllers. `defineAnimation` spins up a new one every time
       // when it gets called.
-      TMAnimation anim = defineAnimation(duration: Duration(seconds: 1));
+      AAnimation anim = defineAnimation(duration: Duration(seconds: 1));
       
-      // You can create multiple animations attached to a single controller.
-      Animation a = anim.defineTween(
-          begin: 0, end: 120, interval: Interval(0, 1, curve: Curves.easeOut));
+      // Attach multiple tweens to the created controller.
+      anim.attach([myTween]);
+      
 
       // ... and at the end control your animation directly by calling forward, reverse, stop
       // methods of the AnimationController instance
       anim.controller.forward();
 
-      // It is important to return a function that returns your widgets. This function gets
+      // It is important to return a function that returns your widget. This function gets
       // gets called on every tick of the animation.
       return () {
-        return Text('value: ${a.value}');
+        return Text('value: ${myTween.value}');
       };
     });
   }
 }
 ```
+
+Additionally the package offers three helper functions to apply scaling, translating and rotating:
+
+```dart
+// Widget withScale({double value = 1, @required Widget child})
+// Widget withTranslate({double x = 0, double y = 0, double z = 0, @required Widget child})
+// Widget withRotation({double x = 0, double y = 0, double z = 0, @required Widget child})
+
+Padding(
+  padding: EdgeInsets.only(bottom: 40),
+  child: withTranslate(
+    y: myTween.value,
+    child: withScale(
+      value: anotherTween.value,
+      child: MyButton("Click me")),
+  ))
+```
+
+
 
 
