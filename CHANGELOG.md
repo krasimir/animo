@@ -1,3 +1,5 @@
+## [3.0.0] - New API for the utilities.
+
 ## [2.0.0] - Renaming to Animo.
 
 ## [1.0.1] - Redesigning the API.

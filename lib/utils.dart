@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget withScale({double value = 1, @required Widget child}) {
+Widget withOpacity(Widget child, {double value = 1}) {
+  return Opacity(opacity: value, child: child);
+}
+
+Widget withScale(Widget child, {double value = 1}) {
   return Transform(
       alignment: FractionalOffset.center,
       transform: new Matrix4.identity()..scale(value, value),
@@ -8,12 +12,15 @@ Widget withScale({double value = 1, @required Widget child}) {
 }
 
 Widget withTranslate(
-    {double x = 0, double y = 0, double z = 0, @required Widget child}) {
+  Widget child, {
+  double x = 0,
+  double y = 0,
+  double z = 0,
+}) {
   return Transform(transform: Matrix4.translationValues(x, y, z), child: child);
 }
 
-Widget withRotation(
-    {double x = 0, double y = 0, double z = 0, @required Widget child}) {
+Widget withRotation(Widget child, {double x = 0, double y = 0, double z = 0}) {
   return Transform(
       transform: Matrix4.rotationX(x)
         ..rotateY(x)

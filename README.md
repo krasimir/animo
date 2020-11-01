@@ -45,18 +45,21 @@ class TestWidget extends StatelessWidget {
 Additionally the package offers three helper functions to apply scaling, translating and rotating:
 
 ```dart
-// Widget withScale({double value = 1, @required Widget child})
-// Widget withTranslate({double x = 0, double y = 0, double z = 0, @required Widget child})
-// Widget withRotation({double x = 0, double y = 0, double z = 0, @required Widget child})
+// Widget withOpacity(Widget child, {double value = 1})
+// Widget withScale(Widget child, {double value = 1})
+// Widget withTranslate(Widget child, {double x = 0, double y = 0, double z = 0})
+// Widget withRotation(Widget child, {double x = 0, double y = 0, double z = 0})
 
 Padding(
   padding: EdgeInsets.only(bottom: 40),
   child: withTranslate(
-    y: myTween.value,
-    child: withScale(
-      value: anotherTween.value,
-      child: MyButton("Click me")),
-  ))
+    withScale(
+      MyButton("Click me"),
+      value: anotherTween.value
+    ),
+    y: myTween.value
+  )
+);
 ```
 
 
