@@ -65,7 +65,7 @@ Padding(
 Also some common fading in and out (with possible position X and/or Y offset):
 
 ```dart
-Widget Widget fadeIn(
+Widget fadeIn(
     child,
     {
       double offsetX = 0,
@@ -80,7 +80,7 @@ Widget Widget fadeIn(
 and 
 
 ```dart
-Widget Widget fadeOut(
+Widget fadeOut(
     child,
     {
       double offsetX = 0,
